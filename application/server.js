@@ -19,6 +19,7 @@ const wallet = new FileSystemWallet(walletPath);
 
 
 app.use(express.static(path.join(__dirname, 'views')));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Index page
 app.get('/', function (req, res) {
