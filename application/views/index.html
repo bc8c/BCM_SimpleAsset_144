@@ -32,22 +32,42 @@ fontawesome -->
                 <input type="text" id="setdata" name="setdata" placeholder="입력할 자산의 data를 입력하세요"> <br>
                 <!-- 버튼영역 -->
                 <button class="btn btn-primary" id="set-btn">입력하기</button>
-            </div>   
-
+            </div>
         
-        <!-- 자산 조회하기 -->
-        <br><br>
-        <div class="row-lg">
-            <div id="get-alert"></div>
-            <h3>id로 자산을 조회합니다</h3>
-            <input type="text" id="getid" name="getid" placeholder="조회할 mate의 id를 입력하세요"> <br>
-            <button class="btn btn-warning" id="get-btn">조회하기</button> 
+            <!-- 자산 조회하기 -->
+            <br><br>
+            <div class="row-lg">
+                <div id="get-alert"></div>
+                <h3>id로 자산을 조회합니다</h3>
+                <input type="text" id="getid" name="getid" placeholder="조회할 mate의 id를 입력하세요"> <br>
+                <button class="btn btn-warning" id="get-btn">조회하기</button> 
                                         
-            <!-- 테이블 안에 row를 하나씩 붙이는 곳 -->
-            <table class="table">
-                <tbody id="table">
-                </tbody>
-            </table>
+                <!-- 테이블 안에 row를 하나씩 붙이는 곳 -->
+                <table class="table">
+                    <tbody id="table"></tbody>
+                </table>
+            </div>        
+
+            <!-- 모든 자산 조회하기 -->
+            <br><br>
+            <div class="row-lg">            
+                <h3>모든 자산을 조회합니다</h3>            
+                <button class="btn btn-warning" id="getall-btn">조회하기</button> 
+                                        
+                <!-- 조회된 정보 출력하는 곳 -->
+                <div id="getAll-alert"></div>
+            </div>
+
+
+            <!-- 히스토리 조회하기 -->
+            <br><br>
+            <div class="row-lg">                
+                <h3>id로 히스토리를 조회합니다</h3>
+                <input type="text" id="gethid" name="gethid" placeholder="조회할 mate의 id를 입력하세요"> <br>
+                <button class="btn btn-warning" id="get-hbtn">조회하기</button> 
+                                        
+                <!-- 조회된 히스트로정보 출력하는 곳 -->
+                <div id="getH-alert"></div>
             </div>
         </div>
     </div>
@@ -96,6 +116,30 @@ fontawesome -->
                 $('#table').append("<tr><th scope='row'>ID</th><td>" + parsedData.key + "</td></tr>")
                 $('#table').append("<tr><th scope='row'>Avg</th><td>" + parsedData.value + "</td></tr>")
             }        
+        })
+    })
+
+
+    $("#getall-btn").click(()=>{
+        const url = "/getAll"
+        $.get(url, (data,status)=>{
+            // http 상태 코드가 200(success)이라면
+            if(status == "success"){
+                $('#getAll-alert').empty()
+                $("#getAll-alert").append(data)                
+            }
+        })
+    })
+
+    $("#get-hbtn").click(()=>{
+        const id = $("#gethid").val();
+        const url = "/getHistory"
+        $.get(url, {id:id}, (data,status)=>{
+            // http 상태 코드가 200(success)이라면
+            if(status == "success"){
+                $('#getH-alert').empty()
+                $("#getH-alert").append(data)                
+            }
         })
     })
 
