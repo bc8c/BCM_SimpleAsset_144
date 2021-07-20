@@ -26,7 +26,6 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/views/index.html');
 });
 
-// Qeury all cars page
 app.get('/get', async function (req, res) {
 
     const id = req.query.id
@@ -53,7 +52,6 @@ app.get('/get', async function (req, res) {
     res.status(200).send(result)
 });
 
-// Qeury all cars page
 app.post('/set', async function (req, res) {
 
     const id = req.body.id;
@@ -74,6 +72,44 @@ app.post('/set', async function (req, res) {
 
     console.log(`result:${result}`);
 
+    res.status(200).send(result)
+});
+
+app.get('/getAll', async function (req, res) {
+    const userExists = await wallet.exists('user1');
+    if (!userExists) {
+        console.log('An identity for the user "user1" does not exist in the wallet');
+        console.log('Run the registerUser.js application before retrying');
+        return;
+    }
+    const gateway = new Gateway();
+    await gateway.connect(ccp, { wallet, identity: 'user1', discovery: { enabled: false } });
+    const network = await gateway.getNetwork('mychannel');
+    const contract = network.getContract('myfirstcc');
+    const result = await contract.evaluateTransaction("getAllKeys");
+
+    console.log(`result:${result}`);
+    res.status(200).send(result)
+});
+
+app.get('/getHistory', async function (req, res) {
+
+    const id = req.query.id
+
+    const userExists = await wallet.exists('user1');
+    if (!userExists) {
+        console.log('An identity for the user "user1" does not exist in the wallet');
+        console.log('Run the registerUser.js application before retrying');
+        return;
+    }
+    const gateway = new Gateway();
+    await gateway.connect(ccp, { wallet, identity: 'user1', discovery: { enabled: false } });
+    const network = await gateway.getNetwork('mychannel');
+    const contract = network.getContract('myfirstcc');
+    const result = await contract.evaluateTransaction("getHistoryForKey",id);
+
+
+    console.log(`result:${result}`);
     res.status(200).send(result)
 });
 
